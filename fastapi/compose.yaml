@@ -6,6 +6,21 @@ services:
     container_name: fastapi-application
     environment:
       PORT: 8000
+      PASSWORD_FILE: /run/secrets/password
+      TOKEN_FILE: /run/secrets/token
     ports:
       - '8000:8000'
-    restart: "no"
+    develop:
+      watch:
+        - action: sync
+          path: /app
+          target: /app
+    secrets:
+      - password
+      - token
+
+secrets:
+  password:
+    file: password.txt
+  token:
+    environment: TOKEN
